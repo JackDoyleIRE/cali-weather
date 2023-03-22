@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import pandas_gbq
+# import pandas_gbq
 
 def read_stations(url: str, table_name: str) -> pd.DataFrame: 
     '''Returns a dataframe from a website url and html table'''
@@ -11,17 +11,16 @@ def read_stations(url: str, table_name: str) -> pd.DataFrame:
     soup = BeautifulSoup(response.text, 'html.parser')
     # Find the HTML table element with a specific ID 
     table = soup.find('table', id=table_name)
-    df = pd.read_html(str(table))[0]
-    return df
+    dataframe = pd.read_html(str(table))[0]
+    return dataframe
 
 def clean_data(dataframe :pd.DataFrame) -> pd.DataFrame:
     '''Returns a clean dataframe, fixing headers and duplicated columns'''
     # assign the first row to be the column headers
-    dataframe.columns = dataframe.iloc[0]
-    # delete the first row 
-    dataframe = dataframe[1:]
-    # reset the index 
-    dataframe = dataframe.reset_index(drop=True) 
+    dataframe.columns = ["STATION", "ID", "ELEVATION FT", "LATITUDE", "LONGITUDE", "COUNTY", "OPERATOR AGENCY"]
+    # convert all columns to the string data type
+    dataframe = dataframe.astype(str)
+    return dataframe
 
 def get_river_names(dataframe :pd.DataFrame)-> pd.DataFrame:
     # create a new column called "RIVER" and initialize it to null
@@ -30,13 +29,14 @@ def get_river_names(dataframe :pd.DataFrame)-> pd.DataFrame:
     current_river = ''
     for i, row in dataframe.iterrows():
     # check if this row contains the river name
-        if row['STATION'] == row['ID'] and row['ID'] == row['ELEV(FEET)']:
+        if row['STATION'] == row['ID'] and row['ID'] == row['ELEVATION FT']:
         # update the current river and set the "RIVER" value for this row
             current_river = row['STATION']
             dataframe.at[i, 'RIVER'] = current_river
         else:
         # if this is not a river row, set the "RIVER" value to the current river
             dataframe.at[i, 'RIVER'] = current_river
+    return dataframe
 
 url = "https://cdec.water.ca.gov/reportapp/javareports?name=DailyPrecip"
 
@@ -47,6 +47,10 @@ station_data = read_stations(url, table_name)
 station_data = clean_data(station_data)
 
 stations_data = get_river_names(station_data)
+
+print(station_data.head())
+
+print(station_data.info())
 
 # Next step writing to bigquery
 
