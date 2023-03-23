@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-# import pandas_gbq
+import pandas_gbq
 
 def read_stations(url: str, table_name: str) -> pd.DataFrame: 
     '''Returns a dataframe from a website url and html table'''
@@ -60,6 +60,6 @@ station_data.to_csv('station_data.csv')
 
 # Next step writing to bigquery
 
-# bq_table_name = "tranquil-gasket-374723.cali_weather.weather_stations"
+bq_table_name = "tranquil-gasket-374723.cali_weather.weather_stations"
 
-# pandas_gbq.to_gbq(station_data, bq_table_name, project_id="tranquil-gasket-374723")
+pandas_gbq.to_gbq(station_data, bq_table_name, project_id="tranquil-gasket-374723")
