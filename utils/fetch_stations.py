@@ -23,20 +23,17 @@ def clean_data(dataframe :pd.DataFrame) -> pd.DataFrame:
     return dataframe
 
 def get_river_names(dataframe :pd.DataFrame)-> pd.DataFrame:
-    # create a new column called "RIVER" and initialize it to null
-    dataframe['RIVER'] = ''  
-    # iterate through the dataframe rows
+    dataframe['RIVER'] = ''
     current_river = ''
     for i, row in dataframe.iterrows():
-    # check if this row contains the river name
         if row['STATION'] == row['ID'] and row['ID'] == row['ELEVATION FT']:
-        # update the current river and set the "RIVER" value for this row
             current_river = row['STATION']
-            dataframe.at[i, 'RIVER'] = current_river
-        else:
-        # if this is not a river row, set the "RIVER" value to the current river
-            dataframe.at[i, 'RIVER'] = current_river
+        dataframe.at[i, 'RIVER'] = current_river
+    
+    dataframe = dataframe[dataframe['STATION'] != dataframe['ID']]
+   
     return dataframe
+
 
 url = "https://cdec.water.ca.gov/reportapp/javareports?name=DailyPrecip"
 
@@ -46,11 +43,13 @@ station_data = read_stations(url, table_name)
 
 station_data = clean_data(station_data)
 
-stations_data = get_river_names(station_data)
+station_data = get_river_names(station_data)
 
 print(station_data.head())
 
 print(station_data.info())
+
+station_data.to_csv('station_data.csv')
 
 # Next step writing to bigquery
 
