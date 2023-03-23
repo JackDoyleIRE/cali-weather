@@ -62,7 +62,7 @@ This explores the recent extreme weather in california of winter 2023
 ### Built With
 
 * [![Node][NodeJS]][Node-url]
-* [![Python3][Python.org]][Python-url]
+* ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
