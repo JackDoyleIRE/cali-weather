@@ -11,7 +11,7 @@
 <h3 align="center">California Weather Analysis</h3>
 
   <p align="center">
-    project_description
+    Data infrastructure for analysis of California Weather
     <br />
     <a href="https://github.com/JackDoyleIRE/node-chat-app"><strong>Explore the docs »</strong></a>
     <br />
@@ -53,9 +53,10 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-(https://weblinkcomingsoon.com/)
+California has been experiencing some wild weather in 2023. The shift from extreme drought conditions with wildfires to extreme cold and massive storms and rainfall has seemed dramatic based on the news coverage. But how extreme has the recent weather actually been?
 
-This explores the recent extreme weather in california of winter 2023
+This project collects data from multiple Californian government online data sources. It then stores them in Google Big Query for multiple analysis use cases.
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -82,9 +83,9 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the app and how to install them (mac only).
-* node
+* python
   ```sh
-  brew install node
+  brew install python
   ```
 
 ### Installation
@@ -93,13 +94,13 @@ This is an example of how to list things you need to use the app and how to inst
    ```sh
    git clone https://github.com/github_username/repo_name.git
    ```
-3. Install NPM packages
+3. Install anaconada
    ```sh
-   npm install
+   brew install anaconda
    ```
-4. Run the app on localhost:3000 
+4. Run the main current ulitiy file
    ```sh
-   node src/app.js
+   python utils/fetch_stations.py
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -119,10 +120,12 @@ App currently in development.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
+- [ ] Grab the rainfall stations and rivers from 
+    - [ ] Store the stations in a Big Query table
+- [ ] Use the API to collect rainfall data for each station
+    - [ ] Store in another Big Query table
+- [ ] Create inital Tableau Public dashboard for trends
+- [ ] Create a React dashboard to view the data
 
 See the [open issues](https://github.com/JackDoyleIRE/cali-weather/issues) for a full list of proposed features (and known issues).
 
