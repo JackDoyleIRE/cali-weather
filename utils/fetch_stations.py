@@ -34,6 +34,11 @@ def get_river_names(dataframe :pd.DataFrame)-> pd.DataFrame:
    
     return dataframe
 
+def fix_data_types(dataframe :pd.DataFrame)-> pd.DataFrame:
+    dataframe['ELEVATION FT'] = dataframe['ELEVATION FT'].astype(int)
+    dataframe['LATITUDE'] = dataframe['LATITUDE'].astype(float)
+    dataframe['LONGITUDE'] = dataframe['LONGITUDE'].astype(float)
+    return dataframe
 
 url = "https://cdec.water.ca.gov/reportapp/javareports?name=DailyPrecip"
 
@@ -44,6 +49,8 @@ station_data = read_stations(url, table_name)
 station_data = clean_data(station_data)
 
 station_data = get_river_names(station_data)
+
+station_data = fix_data_types(station_data)
 
 print(station_data.head())
 
