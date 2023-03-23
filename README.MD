@@ -4,7 +4,9 @@
 <br />
 <div align="center">
 
-  <a href="https://www.flaticon.com/free-icons/storm" title="storm icons">Storm icons created by Freepik - Flaticon</a>
+ <a href="https://github.com/github_username/repo_name">
+    <img src="/images/storm.png" alt="Logo" width="80" height="80">
+  </a>
 
 <h3 align="center">California Weather Analysis</h3>
 
@@ -61,8 +63,10 @@ This explores the recent extreme weather in california of winter 2023
 
 ### Built With
 
-* [![Node][NodeJS]][Node-url]
 * ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+* ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white)
+* ![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -134,16 +138,6 @@ Distributed under the MIT License.
 
 [product-screenshot]: public/images/screenshot.png
 
-[NodeJS]: https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white
-[Node-url]: https://nodejs.org/en/
-
-[Python3]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
-[Python-url]: https://www.python.org/
-
-[Google Cloud]:https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white
-[Big-Query-url]: https://cloud.google.com/bigquery
-
-[Pandas]: https://img.shields.io/badge/pandas-%23150458.svg?style=for-the-badge&logo=pandas&logoColor=white
 
 
 
