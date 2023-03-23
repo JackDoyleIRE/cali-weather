@@ -38,6 +38,9 @@ def fix_data_types(dataframe :pd.DataFrame)-> pd.DataFrame:
     dataframe['ELEVATION FT'] = dataframe['ELEVATION FT'].astype(int)
     dataframe['LATITUDE'] = dataframe['LATITUDE'].astype(float)
     dataframe['LONGITUDE'] = dataframe['LONGITUDE'].astype(float)
+    # Make headers snake case
+    dataframe.columns = [x.lower() for x in dataframe.columns]
+    dataframe.columns = dataframe.columns.str.replace(" ", "_", regex=True)
     return dataframe
 
 url = "https://cdec.water.ca.gov/reportapp/javareports?name=DailyPrecip"
@@ -62,4 +65,4 @@ station_data.to_csv('station_data.csv')
 
 bq_table_name = "tranquil-gasket-374723.cali_weather.weather_stations"
 
-pandas_gbq.to_gbq(station_data, bq_table_name, project_id="tranquil-gasket-374723")
+pandas_gbq.to_gbq(station_data, bq_table_name, project_id="tranquil-gasket-374723", if_exists='replace')
