@@ -23,18 +23,23 @@ def clean_data(dataframe :pd.DataFrame) -> pd.DataFrame:
     return dataframe
 
 def get_river_names(dataframe :pd.DataFrame)-> pd.DataFrame:
+    ''' Returns a dataframe which creates a new river column based on rows'''
+    # Initialize the river column and a looping temp variable
     dataframe['RIVER'] = ''
     current_river = ''
+    # Loop through each row, on each row dedicated to a river name, set this as the 
+    # current river and lable the column appropriately
     for i, row in dataframe.iterrows():
         if row['STATION'] == row['ID'] and row['ID'] == row['ELEVATION FT']:
             current_river = row['STATION']
         dataframe.at[i, 'RIVER'] = current_river
-    
+    # Remove the river name rows
     dataframe = dataframe[dataframe['STATION'] != dataframe['ID']]
    
     return dataframe
 
 def fix_data_types(dataframe :pd.DataFrame)-> pd.DataFrame:
+    '''Returns a dataframe with amended datatypes and column headings'''
     dataframe['ELEVATION FT'] = dataframe['ELEVATION FT'].astype(int)
     dataframe['LATITUDE'] = dataframe['LATITUDE'].astype(float)
     dataframe['LONGITUDE'] = dataframe['LONGITUDE'].astype(float)
