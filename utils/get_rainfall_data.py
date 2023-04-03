@@ -1,22 +1,10 @@
-import requests
-import json
 from google.cloud import bigquery
 
+# Construct a BigQuery client object.
+client = bigquery.Client(project="tranquil-gasket-374723")
 
-# Define the API endpoint URL and parameters
-uri = "gs://cali-rainfall-data-analysis"
-
-# Send a GET request to the API endpoint and get the JSON response
-response = requests.get(url, params=params)
-data = json.loads(response.text)
-
-# Set up a BigQuery client and define the target table
-project_id = "tranquil-gasket-374723" # Replace with your project ID
-client = bigquery.Client(project=project_id)
+# Set table_id to the ID of the table to create.
 table_id = "tranquil-gasket-374723.cali_weather.rainfall_data"
-
-# Define the schema of the target table
-
 
 job_config = bigquery.LoadJobConfig(
     
@@ -35,21 +23,15 @@ job_config = bigquery.LoadJobConfig(
     source_format=bigquery.SourceFormat.NEWLINE_DELIMITED_JSON,
 
 )
-
-
+uri = "gs://cali-rainfall-data-analysis/rainfall-data.json"
 
 load_job = client.load_table_from_uri(
-
-    url,
-
+    uri,
     table_id,
-
     job_config=job_config,
-
 )  # Make an API request.
 
 load_job.result()  # Waits for the job to complete.
 
 destination_table = client.get_table(table_id)
-
 print("Loaded {} rows.".format(destination_table.num_rows))
