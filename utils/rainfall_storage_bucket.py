@@ -12,21 +12,16 @@ data = json.loads(response.text)
 
 # Set the name of your bucket and the name of the object you want to create
 bucket_name = "cali-rainfall-data-analysis"
-object_name = "rainfall-data"
+object_name = "rainfall-data.json"
 
-# Create a client object for Cloud Storage
-client = storage.Client()
+# Save the JSON response to a file
+with open(object_name, "w") as f:
+    json.dump(data, f)
 
-# Get a reference to the bucket
-bucket = client.bucket(bucket_name)
-
-# Create a Blob object for the new object
+# Upload the file to Google Cloud Storage
+storage_client = storage.Client(project="tranquil-gasket-374723")
+bucket = storage_client.bucket(bucket_name)
 blob = bucket.blob(object_name)
+blob.upload_from_filename(object_name)
 
-# Convert the JSON object to a string
-json_object = data
-json_string = json.dumps(json_object)
-
-# Upload the JSON string to the Cloud Storage bucket
-blob.upload_from_string(json_string, content_type="application/json")
-
+print(f"File {object_name} uploaded to bucket {bucket_name}")
