@@ -24,6 +24,21 @@ with open(object_name, "w") as f:
         json.dump(item, f)
         f.write('\n')
 
+with open('rainfall-data.json') as f:
+    data = f.readlines()
+
+for i, line in enumerate(data):
+    json_data = json.loads(line)
+    date = json_data["date"]
+    obs_date = json_data["obsDate"]
+    json_data["date"] = f"{date}:00"
+    json_data["obsDate"] = f"{obs_date}:00"
+    data[i] = json.dumps(json_data)
+
+with open('rainfall-data.json', 'w') as f:
+    for line in data:
+        f.write(json.dumps(json.loads(line)) + '\n')
+
 
 # Upload the file to Google Cloud Storage
 storage_client = storage.Client(project="tranquil-gasket-374723")
