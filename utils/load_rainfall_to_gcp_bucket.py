@@ -1,63 +1,64 @@
 from google.cloud import bigquery
-
-# Create a BigQuery client object.
-client = bigquery.Client(project="tranquil-gasket-374723")
-
-# Set the ID of the table containing the weather station information.
-table_id = "tranquil-gasket-374723.cali_weather.weather_stations"
-
-# Construct a SQL query to retrieve the weather station IDs.
-# The API can only handle a certain number of paramters at once so
-# we take the top 50 sorted in alphabetical order
-query = f"""
-    SELECT DISTINCT id
-    FROM `{table_id}`
-    ORDER BY id
-    LIMIT 50
-"""
-
-# Execute the query and retrieve the results.
-query_job = client.query(query)
-results = query_job.result()
-
-# Extract the weather station IDs into a Python list.
-station_ids = [row.id for row in results]
-
-
 from google.cloud import storage
 import requests
 import json
 
+# Create a BigQuery client object.
+bq_client = bigquery.Client(project="tranquil-gasket-374723")
+
+# Set the ID of the table containing the weather station information.
+table_id = "tranquil-gasket-374723.cali_weather.weather_stations"
+
 # Define the API endpoint URL and parameters
 url = "https://cdec.water.ca.gov/dynamicapp/req/JSONDataServlet"
-# Define the list of station IDs
-
-# Create a comma-separated string of station IDs
-station_ids_str = ",".join(station_ids)
-
-# Update the params dictionary with the new values
-params = {
-    "Stations": station_ids_str,
-    "SensorNums": "2",
-    "dur_code": "D",
-    "Start": "2023-01-01",
-    "End": "2023-01-02"
-}
-
-# Send a GET request to the API endpoint and get the JSON response
-response = requests.get(url, params=params)
-
-data = json.loads(response.text)
 
 # Set the name of your bucket and the name of the object you want to create
 bucket_name = "cali-rainfall-data-analysis"
 object_name = "rainfall-data.json"
 
-# Save the JSON response to a file
-with open(object_name, "w") as f:
-    for item in data:
-        json.dump(item, f)
-        f.write('\n')
+# Define the date range for the API calls
+start_date = "2023-01-01"
+end_date = "2023-01-02"
+
+# Construct a SQL query to retrieve the weather station IDs.
+query = f"""
+    SELECT DISTINCT id
+    FROM `{table_id}`
+    ORDER BY id
+"""
+
+# Execute the query and retrieve the results.
+query_job = bq_client.query(query)
+results = query_job.result()
+
+# Extract the weather station IDs into a Python list.
+station_ids = [row.id for row in results]
+
+# Make API calls with a limit of 50 stations per call
+for i in range(0, len(station_ids), 50):
+    # Create a comma-separated string of station IDs for this API call
+    station_ids_str = ",".join(station_ids[i:i+50])
+
+    # Update the params dictionary with the new values
+    params = {
+        "Stations": station_ids_str,
+        "SensorNums": "2",
+        "dur_code": "D",
+        "Start": start_date,
+        "End": end_date
+    }
+
+    # Send a GET request to the API endpoint and get the JSON response
+    response = requests.get(url, params=params)
+
+    # Parse the JSON response
+    data = json.loads(response.text)
+
+    # Save the JSON response to a file
+    with open(object_name, "a") as f:
+        for item in data:
+            json.dump(item, f)
+            f.write('\n')
 
 with open('rainfall-data.json') as f:
     data = f.readlines()
@@ -73,7 +74,6 @@ for i, line in enumerate(data):
 with open('rainfall-data.json', 'w') as f:
     for line in data:
         f.write(json.dumps(json.loads(line)) + '\n')
-
 
 # Upload the file to Google Cloud Storage
 storage_client = storage.Client(project="tranquil-gasket-374723")
