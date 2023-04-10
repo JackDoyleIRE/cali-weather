@@ -8,7 +8,7 @@ table_id = "tranquil-gasket-374723.cali_weather.weather_stations"
 
 # Construct a SQL query to retrieve the weather station IDs.
 query = f"""
-    SELECT id
+    SELECT DISTINCT id
     FROM `{table_id}`
 """
 

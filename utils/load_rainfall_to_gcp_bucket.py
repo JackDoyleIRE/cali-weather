@@ -1,3 +1,29 @@
+from google.cloud import bigquery
+
+# Create a BigQuery client object.
+client = bigquery.Client(project="tranquil-gasket-374723")
+
+# Set the ID of the table containing the weather station information.
+table_id = "tranquil-gasket-374723.cali_weather.weather_stations"
+
+# Construct a SQL query to retrieve the weather station IDs.
+# The API can only handle a certain number of paramters at once so
+# we take the top 50 sorted in alphabetical order
+query = f"""
+    SELECT DISTINCT id
+    FROM `{table_id}`
+    ORDER BY id
+    LIMIT 50
+"""
+
+# Execute the query and retrieve the results.
+query_job = client.query(query)
+results = query_job.result()
+
+# Extract the weather station IDs into a Python list.
+station_ids = [row.id for row in results]
+
+
 from google.cloud import storage
 import requests
 import json
@@ -5,7 +31,6 @@ import json
 # Define the API endpoint URL and parameters
 url = "https://cdec.water.ca.gov/dynamicapp/req/JSONDataServlet"
 # Define the list of station IDs
-station_ids = ['PTR', 'CCH', 'BRY', '5SI', 'KTT', 'CAU', 'CWD', 'DTV', 'KPI']
 
 # Create a comma-separated string of station IDs
 station_ids_str = ",".join(station_ids)
@@ -21,6 +46,7 @@ params = {
 
 # Send a GET request to the API endpoint and get the JSON response
 response = requests.get(url, params=params)
+
 data = json.loads(response.text)
 
 # Set the name of your bucket and the name of the object you want to create
