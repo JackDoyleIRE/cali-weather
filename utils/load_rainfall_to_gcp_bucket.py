@@ -4,7 +4,20 @@ import json
 
 # Define the API endpoint URL and parameters
 url = "https://cdec.water.ca.gov/dynamicapp/req/JSONDataServlet"
-params = {"Stations": "SDF", "SensorNums": "2", "dur_code": "D", "Start": "2023-01-01", "End": "2023-01-02"}
+# Define the list of station IDs
+station_ids = ['PTR', 'CCH', 'BRY', '5SI', 'KTT', 'CAU', 'CWD', 'DTV', 'KPI']
+
+# Create a comma-separated string of station IDs
+station_ids_str = ",".join(station_ids)
+
+# Update the params dictionary with the new values
+params = {
+    "Stations": station_ids_str,
+    "SensorNums": "2",
+    "dur_code": "D",
+    "Start": "2023-01-01",
+    "End": "2023-01-02"
+}
 
 # Send a GET request to the API endpoint and get the JSON response
 response = requests.get(url, params=params)
@@ -13,10 +26,6 @@ data = json.loads(response.text)
 # Set the name of your bucket and the name of the object you want to create
 bucket_name = "cali-rainfall-data-analysis"
 object_name = "rainfall-data.json"
-
-# Save the first object in the array to a file
-#with open(object_name, "w") as f:
-#    json.dump(data[0], f, indent=2)
 
 # Save the JSON response to a file
 with open(object_name, "w") as f:
