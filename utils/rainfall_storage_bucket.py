@@ -15,8 +15,15 @@ bucket_name = "cali-rainfall-data-analysis"
 object_name = "rainfall-data.json"
 
 # Save the first object in the array to a file
+#with open(object_name, "w") as f:
+#    json.dump(data[0], f, indent=2)
+
+# Save the JSON response to a file
 with open(object_name, "w") as f:
-    json.dump(data[0], f, indent=2)
+    for item in data:
+        json.dump(item, f)
+        f.write('\n')
+
 
 # Upload the file to Google Cloud Storage
 storage_client = storage.Client(project="tranquil-gasket-374723")
