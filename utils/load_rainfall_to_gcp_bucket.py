@@ -17,8 +17,8 @@ bucket_name = "cali-rainfall-data-analysis"
 object_name = "rainfall-data.json"
 
 # Define the date range for the API calls
-start_date = "2023-01-01"
-end_date = "2023-01-02"
+start_date = "2020-01-01"
+end_date = "2023-04-01"
 
 # Construct a SQL query to retrieve the weather station IDs.
 query = f"""
