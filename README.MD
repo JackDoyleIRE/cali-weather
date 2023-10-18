@@ -57,6 +57,9 @@ California has been experiencing some wild weather in 2023. The shift from extre
 
 This project collects data from multiple Californian government online data sources. It then stores them in Google Big Query for multiple analysis use cases.
 
+Check out how this code can be addapted to use Apache Airflow here:
+
+https://github.com/JackDoyleIRE/airflow-pipelines
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
